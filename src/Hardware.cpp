@@ -2,6 +2,10 @@
 
 void Hardware::begin() {
   pinMode(pinGridDetect, INPUT_PULLUP);
+  pinMode(pinControlSSR, OUTPUT);
+  pinMode(pinOnOffInverter, OUTPUT);
+  pinControlSSR = LOW;
+  pinOnOffInverter = LOW;
 }
 
 void Hardware::update() {
