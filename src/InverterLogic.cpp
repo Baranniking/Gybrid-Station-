@@ -11,9 +11,7 @@ void InverterLogic::mode(){
 
     lastPointTimeSSR = now;
     prevStatus = inverterStatus;
-    activGridToHome = false;
-    activGridToBat = false;
-    activBatToHome = false;
+ 
  }
 
 
@@ -26,17 +24,26 @@ switch (inverterStatus){
   case INVERTER_BAT_TO_HOME: handleBatToHome(); break;
   case INVERTER_ALARM: handleALARM(); break;
 }
-}
+
+ void InverterLogic::handleOff(){
+ }
+
+ void InverterLogic::handleWait(){
+  digitalWrite(pinControlSSR, LOW);
+  digitalWrite(pinOnOffMideltCharger, LOW);
+  digitalWrite(pinOnOffInverter, LOW);
+ }
+
 
  void InverterLogic::handleGridToHome(){
   //логика включения инвертора от сети в дом (включает сср в дом)
     if(!activGridToHome && digitalRead(pinControlSSR) == HIGH){
       digitalWrite(pinControlSSR, LOW);
     }
-    digitalWrite(pinOnOffInverter, LOW);
+      digitalWrite(pinOnOffInverter, LOW);
   if(now - lastPointTimeSSR > delayStartSSR){
     digitalWrite(pinControlSSR, HIGH);
-    activGridToHome = true;
+    
    Serial.println("Режим GRID->HOME активен");
   }
   }
@@ -45,8 +52,7 @@ switch (inverterStatus){
     //логика включения режима зарядки
    if(digitalRead(pinOnOffInverter) == LOW){
     digitalWrite(pinOnOffModuleCharger, HIGH);
-    activGridToBat = true;
-    Serial.println("Режим Cеть - BAT активен");
+    Serial.println("Режим сеть - BAT активен");
 
    }
   }
@@ -59,7 +65,6 @@ switch (inverterStatus){
     digitalWrite(pinOnOffInverter, HIGH);
     if(now - lastPointTimeSSR > delayStartSSR){
     digitalWrite(pinControlSSR, HIGH);
-    activBatToHome = true;
     Serial.println("Режим BAT->HOME активен");
     
 
