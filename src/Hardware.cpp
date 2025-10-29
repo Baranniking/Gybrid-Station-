@@ -4,8 +4,11 @@ void Hardware::begin() {
   pinMode(pinGridDetect, INPUT_PULLUP);
   pinMode(pinControlSSR, OUTPUT);
   pinMode(pinOnOffInverter, OUTPUT);
-  pinControlSSR = LOW;
-  pinOnOffInverter = LOW;
+  pinMode(pinOnOffModuleCharger, OUTPUT);
+  
+  digitalWrite(pinOnOffModuleCharger, LOW);
+  digitalWrite(pinControlSSR, LOW);
+  digitalWrite(pinOnOffInverter, LOW);
 }
 
 void Hardware::update() {
