@@ -14,8 +14,6 @@ void InverterLogic::mode(){
  
  }
 
-
-
 switch (inverterStatus){
   case INVERTER_OFF: handleOff(); break;
   case INVERTER_WAIT: handleWait(); break;
@@ -24,21 +22,23 @@ switch (inverterStatus){
   case INVERTER_BAT_TO_HOME: handleBatToHome(); break;
   case INVERTER_ALARM: handleALARM(); break;
 }
+}
 
  void InverterLogic::handleOff(){
  }
 
  void InverterLogic::handleWait(){
   digitalWrite(pinControlSSR, LOW);
-  digitalWrite(pinOnOffMideltCharger, LOW);
+  digitalWrite(pinOnOffModuleCharger, LOW);
   digitalWrite(pinOnOffInverter, LOW);
  }
 
 
  void InverterLogic::handleGridToHome(){
   //логика включения инвертора от сети в дом (включает сср в дом)
-    if(!activGridToHome && digitalRead(pinControlSSR) == HIGH){
+    if(digitalRead(pinControlSSR) == HIGH){
       digitalWrite(pinControlSSR, LOW);
+      delay(10);
     }
       digitalWrite(pinOnOffInverter, LOW);
   if(now - lastPointTimeSSR > delayStartSSR){
@@ -59,8 +59,9 @@ switch (inverterStatus){
 
    void InverterLogic::handleBatToHome(){
     //логика включения инвертора в сеть
-    if(!activBatToHome && (activGridToHome || digitalRead(pinControlSSR) == HIGH)){
+    if(digitalRead(pinControlSSR) == HIGH)){
       digitalWrite(pinControlSSR, LOW);
+      delay(10);
     }
     digitalWrite(pinOnOffInverter, HIGH);
     if(now - lastPointTimeSSR > delayStartSSR){

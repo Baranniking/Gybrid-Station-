@@ -16,6 +16,15 @@ DisplayUI ui;
 TouchInput touch(TOUCH_CS);
 InverterLogic inverter;
 
+uint8_t iconHomeX = 0;
+uint8_t iconHomeY = 0;
+uint8_t iconGridX = 128;
+uint8_t iconGridY = 10;
+uint8_t iconGridW = 64;
+uint8_t iconGridH = 64;
+uint8_t iconBattX = 0;
+uint8_t iconBattY = 0;
+
 void setup() {
   Serial.begin(115200);
 
@@ -30,8 +39,17 @@ void setup() {
 }
 
 void loop() {
+inverter.mode();
 hw.update();
 ui.statusAC(hw.isGridOn());
+if(touch.detectTouch()){
+  TouchPoint p = touch.getLastTouch();
+  if(p.x >= iconGridX && p.x <= (iconGridX + iconGridW) && //если было нажатие на кнопку "сеть"
+     p.y >= iconGridY && p.y <= (iconGridY + iconGridH)){
+      inverter.inverterStatus = INVERTER_WAIT;
+     }
+  }
+
 
 ui.flowACtoBat(TFT_BLUE, TFT_RED, 100);
 ui.flowACtoHome(TFT_BLUE, TFT_RED, 100);

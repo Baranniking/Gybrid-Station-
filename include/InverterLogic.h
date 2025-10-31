@@ -14,12 +14,16 @@ public:
           INVERTER_BAT_TO_HOME,
           INVERTER_ALARM
       };
-      enum prevStatus{};
 void mode();
-
+void setStatus(StatusInverter newStatus){
+    inverterStatus  = newStatus;
+    StatusInverter getStatus()const{
+        return inverterStatus;
+    }
+}
 private:
 StatusInverter inverterStatus = INVERTER_OFF;
-StatusInverter prevStatus;
+StatusInverter prevStatus = INVERTER_OFF;
 unsigned long delayStartSSR = 100;
 unsigned long lastPointTimeSSR = 0;
 unsigned long now = 0;
