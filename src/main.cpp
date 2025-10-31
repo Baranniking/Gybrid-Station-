@@ -20,8 +20,8 @@ uint8_t iconHomeX = 0;
 uint8_t iconHomeY = 0;
 uint8_t iconGridX = 128;
 uint8_t iconGridY = 10;
-uint8_t iconGridW = 64;
-uint8_t iconGridH = 64;
+uint8_t iconW = 64;
+uint8_t iconH = 64;
 uint8_t iconBattX = 0;
 uint8_t iconBattY = 0;
 
@@ -44,9 +44,9 @@ hw.update();
 ui.statusAC(hw.isGridOn());
 if(touch.detectTouch()){
   TouchPoint p = touch.getLastTouch();
-  if(p.x >= iconGridX && p.x <= (iconGridX + iconGridW) && //если было нажатие на кнопку "сеть"
-     p.y >= iconGridY && p.y <= (iconGridY + iconGridH)){
-      inverter.inverterStatus = INVERTER_WAIT;
+  if(p.x >= iconGridX && p.x <= (iconGridX + iconW) && //если было нажатие на кнопку "сеть"
+     p.y >= iconGridY && p.y <= (iconGridY + iconH)){
+      inverter.setStatus(InverterLogic::INVERTER_WAIT));
      }
   }
 
