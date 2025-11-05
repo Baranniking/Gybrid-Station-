@@ -20,6 +20,10 @@ void setStatus(StatusInverter newStatus){
     StatusInverter getStatus()const{
         return inverterStatus;
     }
+    bool modeWait = false;
+    bool modeBatToHome = false;
+    bool modeGridToHome = false;
+    bool modeGridToBat = false;
 }
 private:
 StatusInverter inverterStatus = INVERTER_OFF;

@@ -11,7 +11,7 @@ void InverterLogic::mode(){
 
     lastPointTimeSSR = now;
     prevStatus = inverterStatus;
- 
+    modeWait = false;
  }
 
 switch (inverterStatus){
@@ -31,6 +31,7 @@ switch (inverterStatus){
   digitalWrite(pinControlSSR, LOW);
   digitalWrite(pinOnOffModuleCharger, LOW);
   digitalWrite(pinOnOffInverter, LOW);
+  modeWait = true;
  }
 
 
