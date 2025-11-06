@@ -39,15 +39,16 @@ void setup() {
 }
 
 void loop() {
-inverter.mode();
-hw.update();
-ui.statusAC(hw.isGridOn());
+hw.update(); // обновление статуса сети
+inverter.mode(); // режими инвертора 
+ui.statusAC(hw.isGridOn()); //визиуальный статус внешней сети
+inverter.InfoChargMode(); //управление зарядкой
 
 if(touch.detectTouch()){
   TouchPoint p = touch.getLastTouch();
   if(p.x >= iconGridX && p.x <= (iconGridX + iconW) && //если было нажатие на кнопку "сеть"
      p.y >= iconGridY && p.y <= (iconGridY + iconH)){
-      if(!modeWait){
+      if(!modeWait && hw.isGridOn()){
       inverter.setStatus(InverterLogic::INVERTER_WAIT);
         tft.drawBitmap(128, 10, grid_icon, 64, 64, TFT_GREEN);
         modeWait = true;
@@ -61,9 +62,10 @@ if(touch.detectTouch()){
      }
      else if(p.x >= iconHomeX && p.x <= (iconHomeX + iconW) && //если было нажатие на кнопку "дом"
      p.y >= iconHomeY && p.y <= (iconHomeY + iconH)){
-      if(madeWait){
+      if(madeWait && hw.isGridOn(){
       inverter.setStatus(InverterLogic::INVERTER_GRID_TO_HOME);
       ui.flowACtoHome(TFT_BLUE, TFT_RED, 100);
+        modeGridToHome = true;
       }
       else {
         inverter.setStatus(InverterLogic::INVERTER_BAT_TO_HOME);
@@ -73,14 +75,17 @@ if(touch.detectTouch()){
      }
      else if(p.x >= iconBattX && p.x <= (iconBattX + iconW) && //если было нажатие на кнопку "батарея"
      p.y >= iconBattY && p.x <= (iconBattY + iconH)){
-      inverter.setStatus(InverterLogic::INVERTER_GRID_TO_BAT);
-      ui.flowACtoBat(TFT_BLUE, TFT_RED, 100);
+      if(!modeGridToBat && hw.isGridOn()){
+        modeGridToBat = true;
+      }
+      else {
+        ui.cleanFlowACtoBat();
+        modeGridToBat = false;
+
+      }
      }
   }
 
 
-ui.flowACtoBat(TFT_BLUE, TFT_RED, 100);
-ui.flowACtoHome(TFT_BLUE, TFT_RED, 100);
-ui.flowBatToHome(TFT_BLUE, TFT_GREEN, 100);
 
 }

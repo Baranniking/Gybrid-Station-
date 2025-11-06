@@ -11,14 +11,20 @@ void InverterLogic::mode(){
 
     lastPointTimeSSR = now;
     prevStatus = inverterStatus;
-    modeWait = false;
+    
+ }
+
+ void InverterLogic::InfoChargMode(){
+  if(modeGridToBat){ //режим зарядки активирован 
+
+  }
+
  }
 
 switch (inverterStatus){
   case INVERTER_OFF: handleOff(); break;
   case INVERTER_WAIT: handleWait(); break;
   case INVERTER_GRID_TO_HOME: handleGridToHome(); break;
-  case INVERTER_GRID_TO_BAT: handleGridToBat(); break;
   case INVERTER_BAT_TO_HOME: handleBatToHome(); break;
   case INVERTER_ALARM: handleALARM(); break;
 }
@@ -31,7 +37,7 @@ switch (inverterStatus){
   digitalWrite(pinControlSSR, LOW);
   digitalWrite(pinOnOffModuleCharger, LOW);
   digitalWrite(pinOnOffInverter, LOW);
-  modeWait = true;
+  
  }
 
 
@@ -49,14 +55,7 @@ switch (inverterStatus){
   }
   }
 
-  void InverterLogic::handleGridToBat(){
-    //логика включения режима зарядки
-   if(digitalRead(pinOnOffInverter) == LOW){
-    digitalWrite(pinOnOffModuleCharger, HIGH);
-    Serial.println("Режим сеть - BAT активен");
-
-   }
-  }
+ 
 
    void InverterLogic::handleBatToHome(){
     //логика включения инвертора в сеть
@@ -71,6 +70,21 @@ switch (inverterStatus){
     
 
    }
+
+  }
+
+   void InverterLogic::handleGridToBatOn(){
+    //логика включения режима зарядки
+   if(digitalRead(pinOnOffInverter == LOW && hw.isGridOn()){
+    digitalWrite(pinOnOffModuleCharger, HIGH);
+    Serial.println("Режим сеть - BAT активен");
+   }
+
+    void InverterLogic::handleGridToBatOff(){
+    //логика включения режима зарядки
+    digitalWrite(pinOnOffModuleCharger, LOW);
+    Serial.println("Режим сеть - BAT не активен");
+   
 
   }
   

@@ -10,10 +10,12 @@ public:
           INVERTER_OFF,
           INVERTER_WAIT,
           INVERTER_GRID_TO_HOME,
-          INVERTER_GRID_TO_BAT,
           INVERTER_BAT_TO_HOME,
           INVERTER_ALARM
       };
+void handleGridToBatOn();
+void handleGridToBatOff();
+void InfoChargMode();
 void mode();
 void setStatus(StatusInverter newStatus){
     inverterStatus  = newStatus;
